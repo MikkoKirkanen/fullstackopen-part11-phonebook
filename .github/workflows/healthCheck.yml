@@ -45,8 +45,8 @@ jobs:
           embed-color: 65280
           embed-title: Information
           embed-description: |
-            "**Repository:** [${{github.repository}}](${{github.event.repository.html_url}})"
-            "**ULR:** [${{ env.URL }}](${{ env.URL }})"
+            **Repository:** [${{github.repository}}](${{github.event.repository.html_url}})
+            **ULR:** [fullstackopen-part11-phonebook.onrender.com](https://fullstackopen-part11-phonebook.onrender.com/)
           embed-footer-text: Medical icons created by Freepik - Flaticon
           webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Health check failed Discord notification
@@ -59,7 +59,7 @@ jobs:
           embed-color: 16711680
           embed-title: Information
           embed-description: |
-            "**Repository:** [${{github.repository}}](${{github.event.repository.html_url}})"
-            "**ULR:** [${{ env.URL }}](${{ env.URL }})"
+            **Repository:** [${{github.repository}}](${{github.event.repository.html_url}})
+            **ULR:** [fullstackopen-part11-phonebook.onrender.com](https://fullstackopen-part11-phonebook.onrender.com/)
           embed-footer-text: Flames icons created by Flat Icons - Flaticon
           webhook-url: ${{ secrets.DISCORD_WEBHOOK }}

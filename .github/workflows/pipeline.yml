@@ -28,9 +28,9 @@ jobs:
       - name: Check lint
         run: npm run lint
       - name: Build
-        run: npm run build
+        run: cd frontend && npm run build
       - name: Test
-        run: npm run test
+        run: cd frontend && npm run test
       # - name: Install dependencies
       #   run: npm ci
       # - name: Install Playwright Browsers
@@ -64,8 +64,8 @@ jobs:
           embed-color: 65280
           embed-title: Information
           embed-description: |
-            "**Repository:** [${{github.repository}}](${{github.event.repository.html_url}})"
-            "**ULR:** [${{ env.URL }}](${{ env.URL }})"
+            **Repository:** [${{github.repository}}](${{github.event.repository.html_url}})
+            **ULR:** [fullstackopen-part11-phonebook.onrender.com](https://fullstackopen-part11-phonebook.onrender.com/)
           embed-footer-text: Deploy icons created by kerismaker - Flaticon
           webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
 
@@ -83,8 +83,9 @@ jobs:
           embed-color: 16711680
           embed-title: Information
           embed-description: |
-            "**Repository:** [${{github.repository}}](${{github.event.repository.html_url}})"
-            "**ULR:** [${{ env.URL }}](${{ env.URL }})"
+            **Repository:** [${{github.repository}}](${{github.event.repository.html_url}})
+            **ULR:** [fullstackopen-part11-phonebook.onrender.com](https://fullstackopen-part11-phonebook.onrender.com/)
+            **Commit:** [View](https://github.com/${{ github.repository }}/commit/${{ github.event.pull_request.head.sha }})
           embed-footer-text: Failed icons created by Prashanth Rapolu 15 - Flaticon
           webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
 
@@ -100,4 +101,4 @@ jobs:
         uses: anothrNick/github-tag-action@1.71.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: patch
+          DEFAULT_BUMP: minor
