@@ -1,0 +1,21 @@
+.notification-container {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.5s ease-in-out;
+
+  &.show {
+    max-height: 240px;
+  }
+}
+
+.filter-container {
+  width: 240px;
+}
+
+.person-input-table {
+  width: 320px;
+}
+
+.number-tooltip .tooltip-inner {
+  max-width: 280px;
+}
