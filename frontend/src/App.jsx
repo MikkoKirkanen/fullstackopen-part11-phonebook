@@ -1,26 +1,26 @@
-import { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
-import personsService from './services/persons';
-import Filter from './components/Filter';
-import PersonForm from './components/PersonForm';
-import Persons from './components/Persons';
-import Notification from './components/Notification';
+import { useState, useEffect } from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './index.scss'
+import personsService from './services/persons'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
+import Notification from './components/Notification'
 
 const App = () => {
-  const [persons, setPersons] = useState([]);
-  const [filter, setFilter] = useState('');
-  const [newName, setNewName] = useState('');
-  const [newNumber, setNewNumber] = useState('');
-  const [personId, setPersonId] = useState(null);
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [persons, setPersons] = useState([])
+  const [filter, setFilter] = useState('')
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+  const [personId, setPersonId] = useState(null)
+  const [isEditMode, setIsEditMode] = useState(false)
   const [notification, setNotification] = useState({
     message: '',
     errorMessages: [],
     type: '',
-  });
-  const [timeoutId, setTimeoutId] = useState(null);
-  const [showMessage, setShowMessage] = useState(false);
+  })
+  const [timeoutId, setTimeoutId] = useState(null)
+  const [showMessage, setShowMessage] = useState(false)
 
   // Remember to run server in terminal: npm start
   // React Hook useEffect
@@ -28,53 +28,50 @@ const App = () => {
     personsService
       .getAll()
       .then((data) => {
-        setPersons(data.persons);
+        setPersons(data.persons)
       })
       .catch((error) => {
-        const data = error.response?.data || error;
+        const data = error.response?.data || error
         if (
           error.code === 'ERR_NETWORK' &&
           error.config?.url?.includes('localhost')
         ) {
-          data.messages = [
-            'Is server running?',
-            'Run `npm start` in backend folder',
-          ];
+          data.messages = ['No connect to backend']
         }
-        showNotification(data, 'danger', false);
-      });
-  }, []);
+        showNotification(data, 'danger', false)
+      })
+  }, [])
 
-  const regexp = new RegExp(filter, 'i');
+  const regexp = new RegExp(filter, 'i')
   const personsToShow = !filter
     ? persons
-    : persons.filter((person) => regexp.test(person.name));
+    : persons.filter((person) => regexp.test(person.name))
 
   const handleFilterChange = (event) => {
-    const value = event.target.value;
-    setFilter(value);
-  };
+    const value = event.target.value
+    setFilter(value)
+  }
 
   const handleNameChange = (event) => {
-    setNewName(event.target.value);
-  };
+    setNewName(event.target.value)
+  }
 
   const handleNumberChange = (event) => {
-    setNewNumber(event.target.value);
-  };
+    setNewNumber(event.target.value)
+  }
 
   /**
    * Add new person or update in edit mode
    * @param {object} event
    */
   const add = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     const personObj = {
       name: newName,
       number: newNumber,
-    };
+    }
     if (isEditMode) {
-      personObj.id = personId;
+      personObj.id = personId
       personsService
         .update(personObj)
         .then((data) => {
@@ -82,93 +79,89 @@ const App = () => {
             persons.map((person) =>
               person.id !== data.person.id ? person : data.person
             )
-          );
-          showNotification(data, 'primary');
-          clear();
+          )
+          showNotification(data, 'primary')
+          clear()
         })
         .catch((error) => {
-          showNotification(error.response.data, 'danger');
+          showNotification(error.response.data, 'danger')
           // If 404 then remove person and clear inputs
           if (error.response.status === 404) {
-            removePerson(personObj);
-            clear();
+            removePerson(personObj)
+            clear()
           }
-        });
+        })
     } else {
       personsService
         .create(personObj)
         .then((data) => {
-          setPersons(persons.concat(data.person));
-          showNotification(data, 'success');
-          clear();
+          setPersons(persons.concat(data.person))
+          showNotification(data, 'success')
+          clear()
         })
         .catch((error) => {
-          console.log(error);
-          showNotification(error.response.data, 'danger');
-        });
+          console.log(error)
+          showNotification(error.response.data, 'danger')
+        })
     }
-  };
+  }
 
   const edit = (person) => {
-    setNewName(person.name);
-    setNewNumber(person.number);
-    setPersonId(person.id);
-    setIsEditMode(true);
-  };
-
-  const cancel = () => {
-    clear();
-  };
+    setNewName(person.name)
+    setNewNumber(person.number)
+    setPersonId(person.id)
+    setIsEditMode(true)
+  }
 
   const clear = () => {
-    setNewName('');
-    setNewNumber('');
-    setPersonId(null);
+    setNewName('')
+    setNewNumber('')
+    setPersonId(null)
     // Set edit mode always to false on clear
-    setIsEditMode(false);
-  };
+    setIsEditMode(false)
+  }
 
   const remove = (person) => {
     if (confirm(`Delete ${person.name}?`)) {
       personsService
         .remove(person.id)
         .then((data) => {
-          showNotification(data, 'info');
-          removePerson(data.person);
+          showNotification(data, 'info')
+          removePerson(data.person)
         })
         .catch((error) => {
           if (error.status === 404) {
-            showNotification(error.response.data, 'danger');
-            removePerson(person);
+            showNotification(error.response.data, 'danger')
+            removePerson(person)
           }
-        });
+        })
     }
-  };
+  }
 
   const removePerson = (person) => {
-    const updatedPersons = persons.filter((p) => p.id !== person.id);
-    setPersons(updatedPersons);
-  };
+    const updatedPersons = persons.filter((p) => p.id !== person.id)
+    setPersons(updatedPersons)
+  }
 
   const showNotification = (data, type, hasTimeout = true) => {
     if (timeoutId) {
-      clearTimeout(timeoutId);
+      clearTimeout(timeoutId)
     }
 
     setNotification({
       message: data.message,
       messages: data.messages,
       type: type,
-    });
-    setShowMessage(true);
+    })
+    setShowMessage(true)
 
     if (hasTimeout) {
       const newTimeoutId = setTimeout(() => {
-        setShowMessage(false);
-      }, 5000);
-      setTimeoutId(newTimeoutId);
+        setShowMessage(false)
+      }, 5000)
+      setTimeoutId(newTimeoutId)
     }
-  };
+  }
 
   return (
     <div className='container'>
@@ -186,7 +179,7 @@ const App = () => {
         number={newNumber}
         onNumberChange={handleNumberChange}
         isEditMode={isEditMode}
-        cancel={cancel}
+        cancel={clear}
       />
       <h3>Numbers</h3>
       {personsToShow?.length ? (
@@ -200,7 +193,7 @@ const App = () => {
         <div>No persons to show</div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

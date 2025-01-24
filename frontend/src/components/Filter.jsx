@@ -1,9 +1,22 @@
-const Filter = (props) => {
-  return (
-    <div className="filter-container mb-3">
-      <label htmlFor="filter">Filter by name</label> <input id="filter" className="form-control" value={props.filter} onChange={props.onFilterChange} />
-    </div>
-  );
-};
+import PropTypes from 'prop-types'
 
-export default Filter;
+const Filter = ({ filter, onFilterChange }) => {
+  return (
+    <div className='filter-container mb-3'>
+      <label htmlFor='filter'>Filter by name</label>{' '}
+      <input
+        id='filter'
+        className='form-control'
+        value={filter}
+        onChange={onFilterChange}
+      />
+    </div>
+  )
+}
+
+Filter.propTypes = {
+  filter: PropTypes.string,
+  onFilterChange: PropTypes.func,
+}
+
+export default Filter

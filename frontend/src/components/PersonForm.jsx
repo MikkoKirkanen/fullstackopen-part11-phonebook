@@ -1,5 +1,6 @@
-import Table from 'react-bootstrap/Table';
-import NumberTooltip from './NumberTooltip';
+import PropTypes from 'prop-types'
+import Table from 'react-bootstrap/Table'
+import NumberTooltip from './NumberTooltip'
 
 const PersonForm = ({
   submit,
@@ -73,6 +74,16 @@ const PersonForm = ({
       </tbody>
     </Table>
   </form>
-);
+)
 
-export default PersonForm;
+PersonForm.propTypes = {
+  submit: PropTypes.func,
+  name: PropTypes.string,
+  onNameChange: PropTypes.func,
+  number: PropTypes.string,
+  onNumberChange: PropTypes.func,
+  isEditMode: PropTypes.bool,
+  cancel: PropTypes.func,
+}
+
+export default PersonForm

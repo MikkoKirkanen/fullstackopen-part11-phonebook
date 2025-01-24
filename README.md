@@ -1,5 +1,5 @@
-# fullstackopen-part3
+# fullstackopen-part11-phonebook
 
-## Frontend and backend
+## URL
 
-https://fullstackopen-part3-nv2c.onrender.com/
+https://fullstackopen-part11-phonebook.onrender.com/

@@ -1,6 +1,6 @@
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
-import { QuestionCircleFill } from 'react-bootstrap-icons';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Tooltip from 'react-bootstrap/Tooltip'
+import { QuestionCircleFill } from 'react-bootstrap-icons'
 
 const NumberTooltip = () => (
   <OverlayTrigger
@@ -14,6 +14,6 @@ const NumberTooltip = () => (
   >
     <QuestionCircleFill className='text-primary' tabIndex={0} />
   </OverlayTrigger>
-);
+)
 
-export default NumberTooltip;
+export default NumberTooltip

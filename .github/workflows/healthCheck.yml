@@ -1,0 +1,65 @@
+name: Health Check
+
+on:
+  workflow_run:
+    workflows: [Deployment pipeline]
+    branches: [main]
+    types:
+      - completed
+  schedule:
+    - cron: '0 8 * * *'
+
+env:
+  URL: https://fullstackopen-part11-phonebook.onrender.com/
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the deployed service URL
+        uses: jtalk/url-health-check-action@v4
+        with:
+          # Check the following URLs one by one sequentially
+          url: ${{env.URL}}
+          # Follow redirects, or just report success on 3xx status codes
+          follow-redirect: false # Optional, defaults to "false"
+          # Fail this action after this many failed attempts
+          max-attempts: 3 # Optional, defaults to 1
+          # Delay between retries
+          retry-delay: 5m # Optional, only applicable to max-attempts > 1
+          # Retry all errors, including 404. This option might trigger curl upgrade.
+          # retry-all: false # Optional, defaults to "false"
+          # String representation of cookie attached to health check request.
+          # Format: `Name=Value`
+          # cookie: "token=asdf1234" # Optional, default is empty
+          # Basic auth login password pair.
+          # Format: `login:password`
+          # basic-auth: "login:password" # Optional, default is empty
+      - name: Health check success Discord notification
+        uses: tsickert/discord-webhook@v6.0.0
+        if: success()
+        with:
+          username: Mikko Kirkanen - Health
+          avatar-url: https://cdn-icons-png.flaticon.com/64/3004/3004458.png
+          content: ✅ Health Check Succeeded!
+          embed-color: 65280
+          embed-title: Information
+          embed-description: |
+            "**Repository:** [${{github.repository}}](${{github.event.repository.html_url}})"
+            "**ULR:** [${{ env.URL }}](${{ env.URL }})"
+          embed-footer-text: Medical icons created by Freepik - Flaticon
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Health check failed Discord notification
+        uses: tsickert/discord-webhook@v6.0.0
+        if: failure()
+        with:
+          username: Mikko Kirkanen - Health
+          avatar-url: https://cdn-icons-png.flaticon.com/64/4325/4325956.png
+          content: ❌ Health Check Failed!
+          embed-color: 16711680
+          embed-title: Information
+          embed-description: |
+            "**Repository:** [${{github.repository}}](${{github.event.repository.html_url}})"
+            "**ULR:** [${{ env.URL }}](${{ env.URL }})"
+          embed-footer-text: Flames icons created by Flat Icons - Flaticon
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
